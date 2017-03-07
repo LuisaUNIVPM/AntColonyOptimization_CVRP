@@ -6,6 +6,7 @@ public class Main {
 		
 		InizializzazioneProblema.init();
 		AlgoritmoFormiche formiche=new AlgoritmoFormiche(InizializzazioneProblema.Nodi, InizializzazioneProblema.MatriceIncidenza);
-		formiche.test();
+		//formiche.test();
+		formiche.formiche();
     }
 }

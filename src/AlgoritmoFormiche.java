@@ -4,13 +4,16 @@ public class AlgoritmoFormiche {
 
 	private static final int capacitainiziale = 10;
 	private static final int energiainiziale = 100;
-	private static final int maxIter=1000, m=100;
+	private static final int maxIter=1000, m=10;
 	
 	double[][] feromoni;
 	int numeroNodi;
 	Nodo[] insiemeNodi;
 	int[] soluzione;
 	double[][] matrice;
+	int[] soluzioneottima;  
+	double valoreottimo=10000;//da inizializzare ad un numero piu grande dell'ottimo
+	
 	public AlgoritmoFormiche(Nodo[] Nodi, double[][] matriceIncidenza){
 		matrice=matriceIncidenza;
 		insiemeNodi=Nodi;
@@ -19,7 +22,7 @@ public class AlgoritmoFormiche {
 		//inizializzare soluzione
 	}
 	
-	public void test(){
+	/*public void test(){
 		int[] pippo=costruisciSoluzione();
 		for(int i=0;i<pippo.length;i++){
 			System.out.print("\t"+pippo[i]);
@@ -30,14 +33,30 @@ public class AlgoritmoFormiche {
 		System.out.println("");
 		double pluto=costopercorso(pippo);
 		System.out.println(pluto);
-	}
+	}*/
 	
 	public void formiche(){
 		
-		for( int iter=0;iter<maxIter;iter++){
+		for( int iter=0;iter<1;iter++){
 		
 			for(int k=0;k<m;k++){
-				//complete routes construction
+				
+				soluzione=costruisciSoluzione();		//complete routes construction
+				
+				for(int i=0;i<soluzione.length;i++){
+					System.out.print("\t"+soluzione[i]);
+					if(i%8==4){
+						System.out.println("");
+					}
+				}
+				System.out.println("");
+				double pluto=costopercorso(soluzione);
+				System.out.println(pluto);
+				
+				if(pluto<valoreottimo){
+					soluzioneottima=soluzione;
+					valoreottimo=pluto;
+				}
 				
 				//heuristic
 				
@@ -50,6 +69,8 @@ public class AlgoritmoFormiche {
 			
 			//controllo se la soluzion è stabile se si esco dal ciclo
 		}
+		
+		System.out.println("la soluzione ottima vale: "+ valoreottimo);
 	}
 	
 	int[] costruisciSoluzione(){
