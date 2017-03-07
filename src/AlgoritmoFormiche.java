@@ -45,7 +45,7 @@ public class AlgoritmoFormiche {
 				
 				for(int i=0;i<soluzione.length;i++){
 					System.out.print("\t"+soluzione[i]);
-					if(i%8==4){
+					if(i%5==4){
 						System.out.println("");
 					}
 				}
@@ -60,7 +60,6 @@ public class AlgoritmoFormiche {
 				
 				//heuristic
 				
-				//controllo se Best solution>=L*
 				
 			}
 			
@@ -184,7 +183,7 @@ public class AlgoritmoFormiche {
 		return risultato;
 	}
 	
-	
+	//funzione che mi calcola il costo del percorso della soluzione trovata come somma tra le distanze tra i nodi
 	double costopercorso(int[] sol){
 		double somma=0;
 		somma=insiemeNodi[sol[0]].distanzaDeposito+insiemeNodi[sol[sol.length-1]].distanzaDeposito;

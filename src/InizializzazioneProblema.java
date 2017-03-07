@@ -11,7 +11,7 @@ import jxl.read.biff.BiffException;
 
 public class InizializzazioneProblema  {
 
-	final public static int MaxNodo=9;  //modificare in base alla dimensione dello spazio di stato
+	final public static int MaxNodo=23;  //modificare in base alla dimensione dello spazio di stato
 	final static String pathExcel = "C:/Users/Luisa/Desktop/Università/Laurea magistrale/Ricerca operativa 2 (Pezzella)/AntColonyData.xls";
 
 	public static int[] PosX= new int[MaxNodo]; 
