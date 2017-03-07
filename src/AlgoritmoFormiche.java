@@ -38,12 +38,10 @@ public class AlgoritmoFormiche {
 	public void formiche(){
 		
 		for( int iter=0;iter<1;iter++){
-		
 			for(int k=0;k<m;k++){
-				
 				soluzione=costruisciSoluzione();		//complete routes construction
 				
-				for(int i=0;i<soluzione.length;i++){
+				for(int i=0;i<soluzione.length;i++){		//stampa
 					System.out.print("\t"+soluzione[i]);
 					if(i%5==4){
 						System.out.println("");
@@ -57,20 +55,14 @@ public class AlgoritmoFormiche {
 					soluzioneottima=soluzione;
 					valoreottimo=costo;
 				}
-				
-				//heuristic
-				
-				
+				//heuristic		
 			}
-			
 			//pheromone udate
-			
-			
 			//controllo se la soluzion è stabile se si esco dal ciclo
 		}
-		
 		System.out.println("la soluzione ottima vale: "+ valoreottimo);
 	}
+	
 	
 	int[] costruisciSoluzione(){
 		
@@ -175,11 +167,10 @@ public class AlgoritmoFormiche {
 			tour[tourlength++]=citta.nome;
 			numTabu++;
 		}
-		
+		//
 		//bisogna fare l'euristica
-		
+		//
 		int[] risultato=Arrays.copyOf(tour, tourlength);
-
 		return risultato;
 	}
 	
@@ -187,8 +178,7 @@ public class AlgoritmoFormiche {
 	double costopercorso(int[] sol){
 		double somma=0;
 		somma=insiemeNodi[sol[0]].distanzaDeposito+insiemeNodi[sol[sol.length-1]].distanzaDeposito;
-		for (int j=1;j<sol.length;j++){			
-			
+		for (int j=1;j<sol.length;j++){
 			if (sol[j]==-1){  							//se sono arrivato nel deposito
 				somma=somma+insiemeNodi[sol[j-1]].distanzaDeposito;
 			}else 
