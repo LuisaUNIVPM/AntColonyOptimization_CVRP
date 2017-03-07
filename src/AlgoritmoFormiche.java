@@ -10,8 +10,9 @@ public class AlgoritmoFormiche {
 	int numeroNodi;
 	Nodo[] insiemeNodi;
 	int[] soluzione;
-	
-	public AlgoritmoFormiche(Nodo[] Nodi){
+	double[][] matrice;
+	public AlgoritmoFormiche(Nodo[] Nodi, double[][] matriceIncidenza){
+		matrice=matriceIncidenza;
 		insiemeNodi=Nodi;
 		numeroNodi=Nodi.length;
 		feromoni=new double[numeroNodi][numeroNodi];//inizializzare feromoni
@@ -26,7 +27,9 @@ public class AlgoritmoFormiche {
 				System.out.println("");
 			}
 		}
-		
+		System.out.println("");
+		double pluto=costopercorso(pippo);
+		System.out.println(pluto);
 	}
 	
 	public void formiche(){
@@ -161,20 +164,19 @@ public class AlgoritmoFormiche {
 	}
 	
 	
-	double[][] matrice=new double[numeroNodi][numeroNodi];
-	
-	/double costopercorso(int[] sol){
+	double costopercorso(int[] sol){
 		double somma=0;
-		somma=insiemeNodi[1].distanzaDeposito;
-		for (int j=2;j<sol.length;j++){
-			if (sol[j]==-1){  			//se vengo dal deposito
+		somma=insiemeNodi[sol[0]].distanzaDeposito+insiemeNodi[sol[sol.length-1]].distanzaDeposito;
+		for (int j=1;j<sol.length;j++){			
+			
+			if (sol[j]==-1){  							//se sono arrivato nel deposito
 				somma=somma+insiemeNodi[j-1].distanzaDeposito;
-			}
-			
-			//sistemare se vado al deposito
-			
+			}else 
+				if(sol[j-1]==-1){						//se vengo dal deposito
+					somma=somma+insiemeNodi[j].distanzaDeposito;				
+				}
 			else{
-				somma=somma+matrice[sol[j]][sol[j-1]];
+				somma=somma+matrice[sol[j]][sol[j-1]];  //distanza tra due nodi qualsiasi
 			}
 		}
 		return somma; 
