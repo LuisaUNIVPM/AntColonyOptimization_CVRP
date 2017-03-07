@@ -51,6 +51,10 @@ public class AlgoritmoFormiche {
 				double costo=costopercorso(soluzione);
 				System.out.println(costo);
 				
+				System.out.println("");
+				double costo1=costopercorso1(soluzione);
+				System.out.println(costo1);
+				
 				if(costo<valoreottimo){
 					soluzioneottima=soluzione;
 					valoreottimo=costo;
@@ -192,4 +196,51 @@ public class AlgoritmoFormiche {
 		return somma; 
 	}
 	
+	double costopercorso1(int[] sol){
+		int inizio =0;
+		int fine = 0;
+		double somma = 0;
+		while(fine < sol.length) {
+			fine = trovafinesottotour(sol, inizio);
+			somma+=costosottotour(sol, inizio, fine);
+			inizio=fine+1;
+		}
+		return somma;
+	}
+	//funzione divisione in sottotour
+
+	// se 0<= inizio < fine <= tour.length
+	// e per ogni i, inizio <= i < fine -> tour[i]!= -1
+	// calcola il costo del sottotour tra tour[inizio] e tour[fine-1] 
+	double costosottotour(int[] tour, int inizio,int fine ){
+		double somma;
+		somma=insiemeNodi[tour[inizio]].distanzaDeposito+insiemeNodi[tour[fine-1]].distanzaDeposito;
+		for(int j=inizio+1;j<fine;j++){
+			somma=somma+matrice[tour[j]][tour[j-1]]; 
+		}
+		return somma;
+	}
+	
+	// se inizio < tour.length
+	// restituisce il primo fine >= inizio per cui tour[fine] == -1 oppure fine == tour.length
+	int trovafinesottotour(int[] tour, int inizio){
+		for(int j=inizio;j<tour.length;j++){
+			if(tour[j]==-1){
+				return j;
+			}
+		}
+		return tour.length;
+	}
+	/*
+	//implementazione dell'euristica 2-opt
+	int[] euristica2opt(int[] sol){    //le inversione delle route possono essere fatte solo all'interno di un giro non dell'intero tour
+		int[] soluzione2opt;
+		for(int j=0; j<sol.length;j++){
+			for(int k=j+1; k<sol.length;k++){
+				
+				
+			}
+		}
+		return soluzione2opt;
+	}*/
 }
