@@ -4,7 +4,7 @@ public class AlgoritmoFormiche {
 
 	private static final int capacitainiziale = 10;
 	private static final int energiainiziale = 100;
-	private static final int maxIter=1000, m=10;
+	private static final int maxIter=1000, m=100;
 	
 	double[][] feromoni;
 	int numeroNodi;
@@ -50,12 +50,12 @@ public class AlgoritmoFormiche {
 					}
 				}
 				System.out.println("");
-				double pluto=costopercorso(soluzione);
-				System.out.println(pluto);
+				double costo=costopercorso(soluzione);
+				System.out.println(costo);
 				
-				if(pluto<valoreottimo){
+				if(costo<valoreottimo){
 					soluzioneottima=soluzione;
-					valoreottimo=pluto;
+					valoreottimo=costo;
 				}
 				
 				//heuristic
@@ -191,10 +191,10 @@ public class AlgoritmoFormiche {
 		for (int j=1;j<sol.length;j++){			
 			
 			if (sol[j]==-1){  							//se sono arrivato nel deposito
-				somma=somma+insiemeNodi[j-1].distanzaDeposito;
+				somma=somma+insiemeNodi[sol[j-1]].distanzaDeposito;
 			}else 
 				if(sol[j-1]==-1){						//se vengo dal deposito
-					somma=somma+insiemeNodi[j].distanzaDeposito;				
+					somma=somma+insiemeNodi[sol[j]].distanzaDeposito;				
 				}
 			else{
 				somma=somma+matrice[sol[j]][sol[j-1]];  //distanza tra due nodi qualsiasi
