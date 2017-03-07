@@ -163,7 +163,7 @@ public class AlgoritmoFormiche {
 	
 	double[][] matrice=new double[numeroNodi][numeroNodi];
 	
-	/*double costopercorso(int[] sol){
+	/double costopercorso(int[] sol){
 		double somma=0;
 		somma=insiemeNodi[1].distanzaDeposito;
 		for (int j=2;j<sol.length;j++){
@@ -179,5 +179,5 @@ public class AlgoritmoFormiche {
 		}
 		return somma; 
 	}
-	*/
+	
 }
