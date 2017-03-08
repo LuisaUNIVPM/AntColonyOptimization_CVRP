@@ -66,7 +66,6 @@ public class AlgoritmoFormiche {
 		}
 
 		System.out.println("la soluzione ottima vale: "+ valoreottimo);
-		euristica2nodi(soluzione);
 	}
 	
 	
@@ -224,16 +223,18 @@ public class AlgoritmoFormiche {
 		int fine=0,inizio=0,box;
 		while(fine<sol.length){
 			fine=trovafinesottotour(sol, inizio);
+			double costo=costosottotour(sol, inizio, fine);
 			for(int j=inizio; j<fine;j++){
-				for(int k=j+1;k<(fine-inizio);k++){
+				for(int k=j+1;k<fine;k++){
 					arraybox=sol;
 					box=arraybox[inizio+k];
 					arraybox[inizio+k]=arraybox[inizio+j];
 					arraybox[inizio+j]=box;
-					if (costosottotour(arraybox,inizio,fine)<costosottotour(sol, inizio, fine)){
+					if (costosottotour(arraybox,inizio,fine)<costo){
 						System.out.println(costosottotour(arraybox,inizio,fine));
 						risultato=arraybox;
 					}else{
+						
 						risultato=sol;
 					}
 				}
@@ -241,6 +242,10 @@ public class AlgoritmoFormiche {
 			inizio=fine;
 		}
 		return risultato;
+	}
+	
+	int[] euristicasubtour(){
+		return;
 	}
 	/*
 	//implementazione dell'euristica 2-opt
