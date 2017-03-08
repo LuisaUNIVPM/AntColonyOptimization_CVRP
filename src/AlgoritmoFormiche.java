@@ -4,7 +4,7 @@ public class AlgoritmoFormiche {
 
 	private static final int capacitainiziale = 10;
 	private static final int energiainiziale = 100;
-	private static final int maxIter=1000, m=100;
+	private static final int maxIter=1000, m=10;
 	
 	double[][] feromoni;
 	int numeroNodi;
@@ -51,20 +51,22 @@ public class AlgoritmoFormiche {
 				double costo=costopercorso(soluzione);
 				System.out.println(costo);
 				
-				System.out.println("");
-				double costo1=costopercorso1(soluzione);
-				System.out.println(costo1);
+				
 				
 				if(costo<valoreottimo){
 					soluzioneottima=soluzione;
 					valoreottimo=costo;
+					
+					
 				}
 				//heuristic		
 			}
 			//pheromone udate
 			//controllo se la soluzion è stabile se si esco dal ciclo
 		}
+
 		System.out.println("la soluzione ottima vale: "+ valoreottimo);
+		euristica2nodi(soluzione);
 	}
 	
 	
@@ -179,24 +181,8 @@ public class AlgoritmoFormiche {
 	}
 	
 	//funzione che mi calcola il costo del percorso della soluzione trovata come somma tra le distanze tra i nodi
+		
 	double costopercorso(int[] sol){
-		double somma=0;
-		somma=insiemeNodi[sol[0]].distanzaDeposito+insiemeNodi[sol[sol.length-1]].distanzaDeposito;
-		for (int j=1;j<sol.length;j++){
-			if (sol[j]==-1){  							//se sono arrivato nel deposito
-				somma=somma+insiemeNodi[sol[j-1]].distanzaDeposito;
-			}else 
-				if(sol[j-1]==-1){						//se vengo dal deposito
-					somma=somma+insiemeNodi[sol[j]].distanzaDeposito;				
-				}
-			else{
-				somma=somma+matrice[sol[j]][sol[j-1]];  //distanza tra due nodi qualsiasi
-			}
-		}
-		return somma; 
-	}
-	
-	double costopercorso1(int[] sol){
 		int inizio =0;
 		int fine = 0;
 		double somma = 0;
@@ -230,6 +216,31 @@ public class AlgoritmoFormiche {
 			}
 		}
 		return tour.length;
+	}
+	
+	//implementazione euristica scambio due nodi
+	int[] euristica2nodi(int sol[]){
+		int[] risultato = null,arraybox;
+		int fine=0,inizio=0,box;
+		while(fine<sol.length){
+			fine=trovafinesottotour(sol, inizio);
+			for(int j=inizio; j<fine;j++){
+				for(int k=j+1;k<(fine-inizio);k++){
+					arraybox=sol;
+					box=arraybox[inizio+k];
+					arraybox[inizio+k]=arraybox[inizio+j];
+					arraybox[inizio+j]=box;
+					if (costosottotour(arraybox,inizio,fine)<costosottotour(sol, inizio, fine)){
+						System.out.println(costosottotour(arraybox,inizio,fine));
+						risultato=arraybox;
+					}else{
+						risultato=sol;
+					}
+				}
+			}
+			inizio=fine;
+		}
+		return risultato;
 	}
 	/*
 	//implementazione dell'euristica 2-opt
