@@ -4,7 +4,11 @@ public class AlgoritmoFormiche {
 
 	private static final int capacitainiziale = 10;
 	private static final int energiainiziale = 100;
-	private static final int maxIter=1000, m=100;
+	private static final int maxIter=1000, m=20;
+	
+
+	final double alpha=2,beta=5,gamma=9;
+	final double ro=0.80,theta=80;
 	
 	double[][] feromoni;
 	int numeroNodi;
@@ -17,26 +21,16 @@ public class AlgoritmoFormiche {
 		matrice=matriceIncidenza;
 		insiemeNodi=Nodi;
 		numeroNodi=Nodi.length;
-		feromoni=new double[numeroNodi][numeroNodi];//inizializzare feromoni
+		feromoni=new double[numeroNodi][numeroNodi];
+		feromoneinizializzazione();//inizializzazione feromoni
 		//inizializzare soluzione
 	}
 	
-	/*public void test(){
-		int[] pippo=costruisciSoluzione();
-		for(int i=0;i<pippo.length;i++){
-			System.out.print("\t"+pippo[i]);
-			if(i%8==7){
-				System.out.println("");
-			}
-		}
-		System.out.println("");
-		double pluto=costopercorso(pippo);
-		System.out.println(pluto);
-	}*/
-	
 	public void formiche(){
-		
-		for( int iter=0;iter<1;iter++){
+		for( int iter=0;iter<5;iter++){
+			int[] soluzioneparziale = null;
+			double valoreparziale=1000;		//da inizializzare ad un numero piu grande dell'ottimo
+			double Lavg=0;
 			for(int k=0;k<m;k++){
 				int[] soluzione;
 				soluzione=costruisciSoluzione();		//complete routes construction
@@ -50,17 +44,29 @@ public class AlgoritmoFormiche {
 				System.out.println("");*/
 				euristicasubtour(soluzione);				//heuristic	
 				double costo=costopercorso(soluzione);
+				Lavg=Lavg+costo;
 				//System.out.println(costo);
-				if(costo<valoreottimo){
-					soluzioneottima=soluzione;
-					valoreottimo=costo;
+				if(costo<valoreparziale){
+					soluzioneparziale=soluzione;
+					valoreparziale=costo;
 				}	
 			}
+			if (valoreparziale<valoreottimo){
+				soluzioneottima=soluzioneparziale;
+				valoreottimo=valoreparziale;
+			}
+			
+			System.out.println("");
+			System.out.println("la soluzione parziale alla "+iter+" iterazione vale: "+ valoreparziale);
+			
+			//pheromone evaporation
+			feromoneevaporazione(Lavg);
+			
 			//pheromone udate
 			//controllo se la soluzion è stabile se si esco dal ciclo
 		}
 		System.out.println("");
-		System.out.println("la soluzione ottima vale: "+ valoreottimo);
+		System.out.println("la soluzione ottima vale: "+ valoreottimo+ " ed è la seguente: ");
 		for(int i=0;i<soluzioneottima.length;i++){		//stampa
 			System.out.print("\t"+soluzioneottima[i]);
 			if(i%5==4){
@@ -78,7 +84,6 @@ public class AlgoritmoFormiche {
 		Nodo citta;
 		int capacitaresidua=capacitainiziale;  ///costante
 		double energiaresidua=energiainiziale;
-		double alpha=1,beta=1,gamma=1;
 		int[] tour=new int[2*numeroNodi]; // 2* perchè al massimo posso passare al deposito tante volte quanto il numero di nodi
 		int tourlength=0;
 		
@@ -219,7 +224,7 @@ public class AlgoritmoFormiche {
 		return tour.length;
 	}
 	
-	//implementazione euristica scambio due nodi
+	/*//implementazione euristica scambio due nodi
 	int[] euristica2nodi(int sol[]){
 		int[] risultato = null,arraybox;
 		int fine=0,inizio=0,box;
@@ -244,7 +249,7 @@ public class AlgoritmoFormiche {
 			inizio=fine+1;
 		}
 		return risultato;
-	}
+	}*/
 	
 	void euristicasubtour(int[] sol){
 		int inizio=0, fine=0;
@@ -288,4 +293,31 @@ public class AlgoritmoFormiche {
 		}
 		//System.out.println(costopercorso(array));
 	}
+	
+	void feromoneinizializzazione(){
+		for(int i=0;i<numeroNodi;i++){
+			for(int j=0;j<numeroNodi;j++){
+				feromoni[i][j]=20/200;
+
+				//System.out.print(feromoni[i][j] +"\t");
+				//System.out.println("");
+			}	
+		}
+	}
+	
+	
+	void feromoneevaporazione(double Lavg){
+		for(int i=0;i<numeroNodi;i++){
+			for(int j=0;j<numeroNodi;j++){
+				feromoni[i][j]=(ro+theta/Lavg)*feromoni[i][j];
+				//System.out.print(feromoni[i][j] +"\t");
+			}	
+		}
+	}
+	
+	void feromonedeposizione(){
+		
+	}
 }
+
+
