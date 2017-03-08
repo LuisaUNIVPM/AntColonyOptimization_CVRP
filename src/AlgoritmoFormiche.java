@@ -4,12 +4,11 @@ public class AlgoritmoFormiche {
 
 	private static final int capacitainiziale = 10;
 	private static final int energiainiziale = 100;
-	private static final int maxIter=1000, m=10;
+	private static final int maxIter=1000, m=100;
 	
 	double[][] feromoni;
 	int numeroNodi;
 	Nodo[] insiemeNodi;
-	int[] soluzione;
 	double[][] matrice;
 	int[] soluzioneottima;  
 	double valoreottimo=10000;//da inizializzare ad un numero piu grande dell'ottimo
@@ -39,25 +38,23 @@ public class AlgoritmoFormiche {
 		
 		for( int iter=0;iter<1;iter++){
 			for(int k=0;k<m;k++){
+				int[] soluzione;
 				soluzione=costruisciSoluzione();		//complete routes construction
 				
-				for(int i=0;i<soluzione.length;i++){		//stampa
+				/*for(int i=0;i<soluzione.length;i++){		//stampa
 					System.out.print("\t"+soluzione[i]);
 					if(i%5==4){
 						System.out.println("");
 					}
 				}
-				System.out.println("");
-				euristicasubtour(soluzione);
+				System.out.println("");*/
+				euristicasubtour(soluzione);				//heuristic	
 				double costo=costopercorso(soluzione);
-				System.out.println(costo);
+				//System.out.println(costo);
 				if(costo<valoreottimo){
 					soluzioneottima=soluzione;
 					valoreottimo=costo;
-					
-					
-				}
-				//heuristic		
+				}	
 			}
 			//pheromone udate
 			//controllo se la soluzion è stabile se si esco dal ciclo
@@ -289,18 +286,6 @@ public class AlgoritmoFormiche {
 			array[inizio+k]=array[fine-k-1];
 			array[fine-k-1]=box;
 		}
-		System.out.println(costopercorso(array));
+		//System.out.println(costopercorso(array));
 	}
-	/*
-	//implementazione dell'euristica 2-opt
-	int[] euristica2opt(int[] sol){    //le inversione delle route possono essere fatte solo all'interno di un giro non dell'intero tour
-		int[] soluzione2opt;
-		for(int j=0; j<sol.length;j++){
-			for(int k=j+1; k<sol.length;k++){
-				
-				
-			}
-		}
-		return soluzione2opt;
-	}*/
 }
