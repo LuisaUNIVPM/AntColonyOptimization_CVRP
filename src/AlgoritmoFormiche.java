@@ -31,9 +31,8 @@ public class AlgoritmoFormiche {
 	}
 	
 	public void formiche(){
-		for( int iter=0;iter<5;iter++){
-			int[] soluzioneparziale = null;
-			double valoreparziale=1000;		//da inizializzare ad un numero piu grande dell'ottimo
+		int iterazioniottime=0;
+		for( int iter=0;iter<maxIter;iter++){
 			double Lavg=0;
 			PriorityQueue<Soluzione> soluzionimigliori= new PriorityQueue<Soluzione>(sigma+1, (a,b) -> -(int)(a.costo - b.costo));
 			
@@ -60,26 +59,24 @@ public class AlgoritmoFormiche {
 					
 				Lavg=Lavg+costo;
 				//System.out.println(costo);
-				if(costo<valoreparziale){
-					soluzioneparziale=soluzione;
-					valoreparziale=costo;
-				}	
-			}
-			if (valoreparziale<soluzioneottima.costo){
-				soluzioneottima= new Soluzione(valoreparziale,soluzioneparziale);
+				if (costo<soluzioneottima.costo){
+					iterazioniottime=iter;
+					soluzioneottima= new Soluzione(costo,soluzione);
+				}
 			}
 			
-			System.out.println("");
-			System.out.println("la soluzione parziale alla "+iter+" iterazione vale: "+ valoreparziale);
+			//System.out.println("");
+			//System.out.println("la soluzione parziale alla "+iter+" iterazione vale: "+ valoreparziale);
 			
 			//pheromone evaporation
 			feromoneevaporazione(Lavg);
-			feromonedeposizione(soluzioneottima, soluzionimigliori);
 			//pheromone udate
+			feromonedeposizione(soluzioneottima, soluzionimigliori);
+			
 			//controllo se la soluzion è stabile se si esco dal ciclo
 		}
 		System.out.println("");
-		System.out.println("la soluzione ottima vale: "+ soluzioneottima.costo+ " ed è la seguente: ");
+		System.out.println("la soluzione ottima vale: "+ soluzioneottima.costo+ " ottenuta all'iterazione " +iterazioniottime+" ed è la seguente: ");
 		for(int i=0;i<soluzioneottima.soluzione.length;i++){		//stampa
 			System.out.print("\t"+soluzioneottima.soluzione[i]);
 			if(i%5==4){
@@ -307,6 +304,8 @@ public class AlgoritmoFormiche {
 		//System.out.println(costopercorso(array));
 	}
 	
+	
+	//feromoni
 	void feromoneinizializzazione(){
 		for(int i=0;i<numeroNodi;i++){
 			for(int j=0;j<numeroNodi;j++){
@@ -317,7 +316,6 @@ public class AlgoritmoFormiche {
 			}	
 		}
 	}
-	
 	
 	void feromoneevaporazione(double Lavg){
 		for(int i=0;i<numeroNodi;i++){
@@ -330,12 +328,20 @@ public class AlgoritmoFormiche {
 	
 	void feromonedeposizione(Soluzione soluzioneelitist, PriorityQueue<Soluzione> soluzionimigliori){
 		for(int k=1;k<soluzioneelitist.soluzione.length;k++){
+			if (soluzioneelitist.soluzione[k]==-1 || soluzioneelitist.soluzione[k-1]==-1){
+				continue;
+			}
 			feromoni[soluzioneelitist.soluzione[k-1]][soluzioneelitist.soluzione[k]]+=sigma/soluzioneelitist.costo;
+			feromoni[soluzioneelitist.soluzione[k]][soluzioneelitist.soluzione[k-1]]+=sigma/soluzioneelitist.costo;
 		}
 		for(int lambda=sigma-1;lambda>=0;lambda--){
 			Soluzione s=soluzionimigliori.remove();
 			for(int k=1;k<s.soluzione.length;k++){
+				if (s.soluzione[k]==-1 || s.soluzione[k-1]==-1){
+					continue;
+				}
 				feromoni[s.soluzione[k-1]][s.soluzione[k]]+=(sigma-lambda)/s.costo;
+				feromoni[s.soluzione[k]][s.soluzione[k-1]]+=(sigma-lambda)/s.costo;
 			}
 		}
 	
