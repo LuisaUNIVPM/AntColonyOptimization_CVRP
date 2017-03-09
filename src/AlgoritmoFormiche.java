@@ -128,6 +128,7 @@ public class AlgoritmoFormiche {
 		
 		while(numTabu<numeroNodi){
 			double[] p= new double[numeroNodi];
+			int candidati=0;
 			for(int i=1;i<numeroNodi;i++){
 				Nodo prossimacitta=citta.vicini[i];
 				if (tabulist[prossimacitta.nome]){
@@ -139,10 +140,15 @@ public class AlgoritmoFormiche {
 				if(energiaresidua<(citta.distanze[i]+ prossimacitta.distanzaDeposito)){
 					p[i]=0;
 				} else 
-				p[i]=  //distribuzione di probabilità (non normailzzata)
-					Math.pow(feromoni[prossimacitta.nome][citta.nome]+0.00000001, alpha)*   //0.000001 serve per l'inizializzazione
+				if(candidati<numeroNodi/3){
+					p[i]=  //distribuzione di probabilità (non normailzzata)
+					Math.pow(feromoni[prossimacitta.nome][citta.nome]+0.00000000000001, alpha)*   //0.000001 serve per l'inizializzazione
 					Math.pow(1/citta.distanze[i], beta)*
 					Math.pow(citta.distanzaDeposito+prossimacitta.distanzaDeposito-citta.distanze[i], gamma);    //distanza triangolare		
+					candidati++;
+				}else{
+					break;
+				}
 			}
 			for(int i=1;i<numeroNodi;i++){
 				p[i]=p[i]+p[i-1];  //sovrascrivo somme parziali 
@@ -234,32 +240,6 @@ public class AlgoritmoFormiche {
 		return tour.length;
 	}
 	
-	/*//implementazione euristica scambio due nodi
-	int[] euristica2nodi(int sol[]){
-		int[] risultato = null,arraybox;
-		int fine=0,inizio=0,box;
-		while(fine<sol.length){
-			fine=trovafinesottotour(sol, inizio);
-			double costo=costosottotour(sol, inizio, fine);
-			for(int j=inizio; j<fine;j++){
-				for(int k=j+1;k<fine;k++){
-					arraybox=sol;
-					box=arraybox[inizio+k];
-					arraybox[inizio+k]=arraybox[inizio+j];
-					arraybox[inizio+j]=box;
-					if (costosottotour(arraybox,inizio,fine)<costo){
-						System.out.println(costosottotour(arraybox,inizio,fine));
-						risultato=arraybox;
-					}else{
-						
-						risultato=sol;
-					}
-				}
-			}
-			inizio=fine+1;
-		}
-		return risultato;
-	}*/
 	
 	void euristicasubtour(int[] sol){
 		int inizio=0, fine=0;
