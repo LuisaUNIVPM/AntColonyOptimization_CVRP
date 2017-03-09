@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.PriorityQueue;
 
 public class AlgoritmoFormiche {
 
@@ -9,13 +10,16 @@ public class AlgoritmoFormiche {
 
 	final double alpha=2,beta=5,gamma=9;
 	final double ro=0.80,theta=80;
+	final int sigma=3;
 	
-	double[][] feromoni;
+	
 	int numeroNodi;
 	Nodo[] insiemeNodi;
 	double[][] matrice;
-	int[] soluzioneottima;  
-	double valoreottimo=10000;//da inizializzare ad un numero piu grande dell'ottimo
+	double[][] feromoni;
+	Soluzione soluzioneottima;
+	//da inizializzare ad un numero piu grande dell'ottimo
+	
 	
 	public AlgoritmoFormiche(Nodo[] Nodi, double[][] matriceIncidenza){
 		matrice=matriceIncidenza;
@@ -23,7 +27,7 @@ public class AlgoritmoFormiche {
 		numeroNodi=Nodi.length;
 		feromoni=new double[numeroNodi][numeroNodi];
 		feromoneinizializzazione();//inizializzazione feromoni
-		//inizializzare soluzione
+		soluzioneottima=new Soluzione(1000,null);//inizializzare soluzione
 	}
 	
 	public void formiche(){
@@ -31,6 +35,9 @@ public class AlgoritmoFormiche {
 			int[] soluzioneparziale = null;
 			double valoreparziale=1000;		//da inizializzare ad un numero piu grande dell'ottimo
 			double Lavg=0;
+			PriorityQueue<Soluzione> soluzionimigliori= new PriorityQueue<Soluzione>(sigma+1, (a,b) -> -(int)(a.costo - b.costo));
+			
+						
 			for(int k=0;k<m;k++){
 				int[] soluzione;
 				soluzione=costruisciSoluzione();		//complete routes construction
@@ -44,6 +51,13 @@ public class AlgoritmoFormiche {
 				System.out.println("");*/
 				euristicasubtour(soluzione);				//heuristic	
 				double costo=costopercorso(soluzione);
+				
+				//creazione vettori sigmasoluzioni per feromoni
+				soluzionimigliori.add(new Soluzione(costo,soluzione));
+				if (soluzionimigliori.size()>sigma){
+					soluzionimigliori.remove();
+				}
+					
 				Lavg=Lavg+costo;
 				//System.out.println(costo);
 				if(costo<valoreparziale){
@@ -51,9 +65,8 @@ public class AlgoritmoFormiche {
 					valoreparziale=costo;
 				}	
 			}
-			if (valoreparziale<valoreottimo){
-				soluzioneottima=soluzioneparziale;
-				valoreottimo=valoreparziale;
+			if (valoreparziale<soluzioneottima.costo){
+				soluzioneottima= new Soluzione(valoreparziale,soluzioneparziale);
 			}
 			
 			System.out.println("");
@@ -61,14 +74,14 @@ public class AlgoritmoFormiche {
 			
 			//pheromone evaporation
 			feromoneevaporazione(Lavg);
-			
+			feromonedeposizione(soluzioneottima, soluzionimigliori);
 			//pheromone udate
 			//controllo se la soluzion è stabile se si esco dal ciclo
 		}
 		System.out.println("");
-		System.out.println("la soluzione ottima vale: "+ valoreottimo+ " ed è la seguente: ");
-		for(int i=0;i<soluzioneottima.length;i++){		//stampa
-			System.out.print("\t"+soluzioneottima[i]);
+		System.out.println("la soluzione ottima vale: "+ soluzioneottima.costo+ " ed è la seguente: ");
+		for(int i=0;i<soluzioneottima.soluzione.length;i++){		//stampa
+			System.out.print("\t"+soluzioneottima.soluzione[i]);
 			if(i%5==4){
 				System.out.println("");
 			}
@@ -297,7 +310,7 @@ public class AlgoritmoFormiche {
 	void feromoneinizializzazione(){
 		for(int i=0;i<numeroNodi;i++){
 			for(int j=0;j<numeroNodi;j++){
-				feromoni[i][j]=20/200;
+				feromoni[i][j]=m/200;
 
 				//System.out.print(feromoni[i][j] +"\t");
 				//System.out.println("");
@@ -315,9 +328,20 @@ public class AlgoritmoFormiche {
 		}
 	}
 	
-	void feromonedeposizione(){
-		
+	void feromonedeposizione(Soluzione soluzioneelitist, PriorityQueue<Soluzione> soluzionimigliori){
+		for(int k=1;k<soluzioneelitist.soluzione.length;k++){
+			feromoni[soluzioneelitist.soluzione[k-1]][soluzioneelitist.soluzione[k]]+=sigma/soluzioneelitist.costo;
+		}
+		for(int lambda=sigma-1;lambda>=0;lambda--){
+			Soluzione s=soluzionimigliori.remove();
+			for(int k=1;k<s.soluzione.length;k++){
+				feromoni[s.soluzione[k-1]][s.soluzione[k]]+=(sigma-lambda)/s.costo;
+			}
+		}
+	
 	}
+	
+		
 }
 
 
