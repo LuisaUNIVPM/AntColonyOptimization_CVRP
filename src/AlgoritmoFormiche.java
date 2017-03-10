@@ -26,7 +26,7 @@ public class AlgoritmoFormiche {
 		insiemeNodi=Nodi;
 		numeroNodi=Nodi.length;
 		feromoni=new double[numeroNodi][numeroNodi];
-		feromoneinizializzazione();//inizializzazione feromoni
+		FunFeromoni.feromoneinizializzazione(numeroNodi, feromoni, m);//inizializzazione feromoni
 		soluzioneottima=new Soluzione(1000,null);//inizializzare soluzione
 	}
 	
@@ -70,10 +70,10 @@ public class AlgoritmoFormiche {
 			//System.out.println("la soluzione parziale alla "+iter+" iterazione vale: "+ valoreparziale);
 			
 			//pheromone evaporation
-			feromoneevaporazione(Lavg);
+			FunFeromoni.feromoneevaporazione(Lavg, numeroNodi, feromoni, ro, theta);
 			//pheromone udate
-			feromonedeposizione(soluzioneottima, soluzionimigliori);
-			
+			FunFeromoni.feromonedeposizione(soluzioneottima, soluzionimigliori, feromoni, sigma);
+
 			//controllo se la soluzion è stabile se si esco dal ciclo
 		}
 		System.out.println("");
@@ -173,7 +173,7 @@ public class AlgoritmoFormiche {
 		//System.out.println(costopercorso(array));
 	}
 	*/
-	
+	/*
 	//feromoni
 	void feromoneinizializzazione(){
 		for(int i=0;i<numeroNodi;i++){
@@ -215,7 +215,7 @@ public class AlgoritmoFormiche {
 		}
 	
 	}
-	
+	*/
 		
 }
 
