@@ -4,7 +4,7 @@ import java.util.PriorityQueue;
 public class AlgoritmoFormiche {
 
 	private static final int capacitainiziale = 10;
-	private static final int energiainiziale = 100;
+	private static final double energiainiziale = 100;
 	private static final int maxIter=1000, m=20;
 	
 
@@ -39,7 +39,8 @@ public class AlgoritmoFormiche {
 						
 			for(int k=0;k<m;k++){
 				int[] soluzione;
-				soluzione=costruisciSoluzione();		//complete routes construction
+				soluzione=CreazionePercorso.costruiscipercorso(numeroNodi,capacitainiziale,energiainiziale,insiemeNodi,feromoni,alpha,beta,gamma);
+						//complete routes construction
 				
 				/*for(int i=0;i<soluzione.length;i++){		//stampa
 					System.out.print("\t"+soluzione[i]);
@@ -87,7 +88,7 @@ public class AlgoritmoFormiche {
 	}
 	
 	
-	int[] costruisciSoluzione(){
+	/*int[] costruisciSoluzione(){
 		
 		int numTabu=0;
 		boolean[] tabulist=new boolean[numeroNodi];
@@ -201,7 +202,7 @@ public class AlgoritmoFormiche {
 		int[] risultato=Arrays.copyOf(tour, tourlength);
 		return risultato;
 	}
-	
+	*/
 	//funzione che mi calcola il costo del percorso della soluzione trovata come somma tra le distanze tra i nodi
 		
 	double costopercorso(int[] sol){
