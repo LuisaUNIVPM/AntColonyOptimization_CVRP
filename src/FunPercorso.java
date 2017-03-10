@@ -1,8 +1,8 @@
 import java.util.Arrays;
 
-public class CreazionePercorso {
+public class FunPercorso {
 	
-public static int[] costruiscipercorso(int numeroNodi, int capacitainiziale, double energiainiziale,Nodo[] insiemeNodi,double[][] feromoni, double alpha, double beta, double gamma){
+static int[] costruiscipercorso(int numeroNodi, int capacitainiziale, double energiainiziale,Nodo[] insiemeNodi,double[][] feromoni, double alpha, double beta, double gamma){
 		
 		int numTabu=0;
 		boolean[] tabulist=new boolean[numeroNodi];
@@ -117,4 +117,18 @@ public static int[] costruiscipercorso(int numeroNodi, int capacitainiziale, dou
 		return risultato;
 	}
 	
+
+	//funzione che mi calcola il costo del percorso della soluzione trovata come somma tra le distanze tra i nodi
+
+	static double costopercorso(int[] sol, Nodo[] insiemeNodi, double[][]matrice){
+		int inizio =0;
+		int fine = 0;
+		double somma = 0;
+		while(fine < sol.length) {
+			fine = FunSottotour.trovafinesottotour(sol, inizio);
+			somma+=FunSottotour.costosottotour(sol, inizio, fine,insiemeNodi,matrice);
+			inizio=fine+1;
+		}
+		return somma;
+	}
 }
