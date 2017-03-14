@@ -13,7 +13,7 @@ public class AlgoritmoFormiche {
 	final int sigma=3;
 	
 	
-	public final int numeroNodi;
+	int numeroNodi;
 	Nodo[] insiemeNodi;
 	double[][] matrice;
 	double[][] feromoni;
@@ -29,7 +29,7 @@ public class AlgoritmoFormiche {
 		soluzioneottima=new Soluzione(1000,null);//inizializzare soluzione
 	}
 	
-	public void formiche(){
+	public Soluzione formiche(){
 		int iterazioniottime=0;
 		for( int iter=0;iter<maxIter;iter++){
 			double Lavg=0;
@@ -84,6 +84,8 @@ public class AlgoritmoFormiche {
 			}
 		}
 		System.out.println("");
+		
+		return soluzioneottima;
 	}
 	
 }

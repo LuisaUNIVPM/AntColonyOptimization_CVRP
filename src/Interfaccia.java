@@ -16,18 +16,22 @@ import javax.swing.JCheckBox;
 import javax.swing.JButton;
 import javax.swing.border.SoftBevelBorder;
 import javax.swing.border.BevelBorder;
+import javax.swing.JLabel;
 
 public class Interfaccia extends JFrame {
 	
 	private JPanel contentPane;
 
+	static Soluzione Pippo=new Soluzione(1000,null);
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		InizializzazioneProblema.init();
 		AlgoritmoFormiche formiche=new AlgoritmoFormiche(InizializzazioneProblema.Nodi, InizializzazioneProblema.MatriceIncidenza);
-		formiche.formiche();
+		Pippo=formiche.formiche();
+		
+		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -56,14 +60,41 @@ public class Interfaccia extends JFrame {
 	        panel.setBackground(Color.WHITE);
 	        panel.setBounds(335, 11, 539, 539);
 	        getContentPane().add(panel);
+	        panel.setLayout(null);
+	        
+	        for(int i=0;i<InizializzazioneProblema.Nodi.length;i++){
+	        JLabel lblNewLabel = new JLabel(""+InizializzazioneProblema.Nodi[i].nome);
+	        lblNewLabel.setBounds(20+250+InizializzazioneProblema.PosX[i]*10+10, 250+20-InizializzazioneProblema.PosY[i]*10+5, 46, 14);
+	        panel.add(lblNewLabel);
+	        }
+	        JLabel lblNewLabel = new JLabel("D");
+	        lblNewLabel.setBounds(20+245+10,20+245+7, 46, 14);
+	        panel.add(lblNewLabel);
+	        
 	}
 	void drawLines(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
+        g2d.setColor(Color.GREEN);
         for(int i=0; i<InizializzazioneProblema.Nodi.length;i++){
-        	Ellipse2D.Double nodo1=new Ellipse2D.Double(10+50*i,300,10,10);
-        	g2d.fill(nodo1);
-        	Rectangle nodo= new Rectangle(10 +100*i,200,10,10);
+        	Ellipse2D.Double nodo=new Ellipse2D.Double(344+20+250+InizializzazioneProblema.PosX[i]*10,42+250+20-InizializzazioneProblema.PosY[i]*10,10,10);
         	g2d.fill(nodo);
+        }
+        
+        g2d.setColor(Color.RED);
+        Rectangle nodo1= new Rectangle(344+20+245,42+20+245,10,10);
+        g2d.fill(nodo1);
+
+        g2d.setColor(Color.BLACK); 
+		g2d.drawLine(344+20+250, 42+20+250, 344+20+255+InizializzazioneProblema.PosX[Pippo.soluzione[0]]*10, 42+255+20-InizializzazioneProblema.PosY[Pippo.soluzione[0]]*10);
+        for(int j=1;j<Pippo.soluzione.length;j++){
+        		if(Pippo.soluzione[j]==-1){
+        			g2d.drawLine(344+20+255+InizializzazioneProblema.PosX[Pippo.soluzione[j-1]]*10, 42+255+20-InizializzazioneProblema.PosY[Pippo.soluzione[j-1]]*10,344+20+250, 42+20+250);
+        		}else
+        			if(Pippo.soluzione[j-1]==-1){
+        				g2d.drawLine(344+20+250, 42+20+250, 344+20+255+InizializzazioneProblema.PosX[Pippo.soluzione[j]]*10, 42+255+20-InizializzazioneProblema.PosY[Pippo.soluzione[j]]*10);
+            		}else{
+        		g2d.drawLine(344+20+255+InizializzazioneProblema.PosX[Pippo.soluzione[j-1]]*10, 42+255+20-InizializzazioneProblema.PosY[Pippo.soluzione[j-1]]*10, 344+20+255+InizializzazioneProblema.PosX[Pippo.soluzione[j]]*10, 42+255+20-InizializzazioneProblema.PosY[Pippo.soluzione[j]]*10);
+            		}
         }
         
     }
@@ -72,5 +103,4 @@ public class Interfaccia extends JFrame {
 	        super.paint(g);
 	        drawLines(g);
 	    }
-	
 }
