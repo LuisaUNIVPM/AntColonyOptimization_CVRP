@@ -96,7 +96,7 @@ public class Interfaccia extends JFrame {
         		g2d.drawLine(344+20+255+InizializzazioneProblema.PosX[Pippo.soluzione[j-1]]*10, 42+255+20-InizializzazioneProblema.PosY[Pippo.soluzione[j-1]]*10, 344+20+255+InizializzazioneProblema.PosX[Pippo.soluzione[j]]*10, 42+255+20-InizializzazioneProblema.PosY[Pippo.soluzione[j]]*10);
             		}
         }
-        
+        g2d.drawLine(344+20+255+InizializzazioneProblema.PosX[Pippo.soluzione[Pippo.soluzione.length-1]]*10, 42+255+20-InizializzazioneProblema.PosY[Pippo.soluzione[Pippo.soluzione.length-1]]*10,344+20+250, 42+20+250);
     }
 	
 	 public void paint(Graphics g) {
