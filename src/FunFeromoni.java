@@ -5,7 +5,7 @@ public class FunFeromoni {
 		static void feromoneinizializzazione(int numeroNodi, double[][]feromoni, int m){
 			for(int i=0;i<numeroNodi;i++){
 				for(int j=0;j<numeroNodi;j++){
-					feromoni[i][j]=m/200;
+					feromoni[i][j]=m/240;
 
 					//System.out.print(feromoni[i][j] +"\t");
 					//System.out.println("");

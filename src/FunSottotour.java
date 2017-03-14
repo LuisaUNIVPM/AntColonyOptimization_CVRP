@@ -1,6 +1,5 @@
 
 public class FunSottotour {
-	//funzione divisione in sottotour
 
 		// se 0<= inizio < fine <= tour.length
 		// e per ogni i, inizio <= i < fine -> tour[i]!= -1

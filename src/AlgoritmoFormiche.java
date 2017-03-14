@@ -1,4 +1,4 @@
-import java.util.Arrays;
+//import java.util.Arrays;
 import java.util.PriorityQueue;
 
 public class AlgoritmoFormiche {
@@ -13,7 +13,7 @@ public class AlgoritmoFormiche {
 	final int sigma=3;
 	
 	
-	int numeroNodi;
+	public final int numeroNodi;
 	Nodo[] insiemeNodi;
 	double[][] matrice;
 	double[][] feromoni;
