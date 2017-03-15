@@ -7,10 +7,10 @@ public class AlgoritmoFormiche {
 	private static final double energiainiziale = 100;
 	private static final int maxIter=1000;
 	
-	private static final int  m=20;
-	final double alpha=2,beta=5,gamma=9;
-	final double ro=0.80,theta=80;
-	final int sigma=3;
+	static int  m=Variabili.mVar;
+	double alpha=Variabili.alphaVar,beta=Variabili.betaVar,gamma=Variabili.gammaVar;
+	double ro=Variabili.roVar,theta=Variabili.thetaVar;
+	int sigma=Variabili.sigmaVar;
 	
 	
 	int numeroNodi;

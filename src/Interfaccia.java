@@ -1,21 +1,16 @@
-import java.awt.BorderLayout;
+
 import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.Ellipse2D;
-import java.awt.geom.Line2D;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import java.awt.Color;
-import javax.swing.border.MatteBorder;
-import javax.swing.border.LineBorder;
-import javax.swing.JCheckBox;
 import javax.swing.JButton;
 import javax.swing.border.SoftBevelBorder;
 import javax.swing.border.BevelBorder;
@@ -23,15 +18,18 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
-import java.awt.SystemColor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.ImageIcon;
 
 public class Interfaccia extends JFrame {
 	
-	private JPanel contentPane;
 
-	static Soluzione Pippo=new Soluzione(1000,null);
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	static Soluzione SoluzioneACO=new Soluzione(1000,null);
 	private JTextField txtm;
 	private JTextField txtalfa;
 	private JTextField txtbeta;
@@ -43,7 +41,7 @@ public class Interfaccia extends JFrame {
 	private JTextField txtsigma;
 	private JTextField txtTempo;
 	
-	boolean premuto;
+	boolean premuto=false;
 	/**
 	 * Launch the application.
 	 */
@@ -262,39 +260,46 @@ public class Interfaccia extends JFrame {
 	        getContentPane().add(txtTempo);
 	        
 	        
-	        
-	        JButton Bottone = new JButton("START");
-	        Bottone.addMouseListener(new MouseAdapter() {
+
+	       
+	        JButton refresh = new JButton("");
+	        refresh.addMouseListener(new MouseAdapter() {
 	        	@Override
 	        	public void mouseClicked(MouseEvent arg0) {
+	        		premuto=false;
+	        		repaint();
+	        		ValoreMigliore.setText("");
+	        	}
+	        });
+	        refresh.setIcon(new ImageIcon(Interfaccia.class.getResource("/com/sun/javafx/scene/web/skin/Undo_16x16_JFX.png")));
+	        refresh.setBounds(241, 341, 30, 23);
+	        getContentPane().add(refresh);
+	        
+	        JButton Bottone = new JButton("START");
+	        Bottone.setFont(new Font("Times New Roman", Font.BOLD, 12));
+	        Bottone.addMouseListener(new MouseAdapter() {
+	        	@Override
+	        	public void mouseClicked(MouseEvent e) {
+	        		
 	        		premuto=true;
 
-	        		AlgoritmoFormiche formiche=new AlgoritmoFormiche(InizializzazioneProblema.Nodi, InizializzazioneProblema.MatriceIncidenza);
-	        		Pippo=formiche.formiche();
-	        		
-	        		//removeall() rimuove tutti gli oggetti
-	        		
-	        		//lettura da texfielder alfa beta gamma....
+	        		//lettura da box alfa beta gamma....
 	        		
 	        		
 	        		//esecuzione algoritmo
-	        		
+	        		AlgoritmoFormiche formiche=new AlgoritmoFormiche(InizializzazioneProblema.Nodi, InizializzazioneProblema.MatriceIncidenza);
+	        		SoluzioneACO=formiche.formiche();
 	        		
 	        		//stampa percorsi
 	        		repaint();
 	        		
-	        		
 					//stampa risultati
-	        		
 	        		DecimalFormat DF=new DecimalFormat("#.####",new DecimalFormatSymbols());
 	        		DF.setRoundingMode(RoundingMode.CEILING);
-	        		ValoreMigliore.setText(DF.format(Pippo.costo));
+	        		ValoreMigliore.setText(DF.format(SoluzioneACO.costo));
 	        	}
 	        });
-	        Bottone.setForeground(Color.BLACK);
-	        Bottone.setBackground(SystemColor.inactiveCaption);
-	        Bottone.setFont(new Font("Times New Roman", Font.BOLD, 12));
-	        Bottone.setBounds(113, 341, 89, 23);
+	        Bottone.setBounds(116, 341, 89, 23);
 	        getContentPane().add(Bottone);
 	        
 	}
@@ -311,21 +316,22 @@ public class Interfaccia extends JFrame {
     
         if (premuto){
 		     
-        
         g2d.setColor(Color.BLACK); 
-		g2d.drawLine(344+20+250, 42+20+250, 344+20+255+InizializzazioneProblema.PosX[Pippo.soluzione[0]]*10, 42+255+20-InizializzazioneProblema.PosY[Pippo.soluzione[0]]*10);
-        for(int j=1;j<Pippo.soluzione.length;j++){
-        		if(Pippo.soluzione[j]==-1){
-        			g2d.drawLine(344+20+255+InizializzazioneProblema.PosX[Pippo.soluzione[j-1]]*10, 42+255+20-InizializzazioneProblema.PosY[Pippo.soluzione[j-1]]*10,344+20+250, 42+20+250);
+		g2d.drawLine(344+20+250, 42+20+250, 344+20+255+InizializzazioneProblema.PosX[SoluzioneACO.soluzione[0]]*10, 42+255+20-InizializzazioneProblema.PosY[SoluzioneACO.soluzione[0]]*10);
+        for(int j=1;j<SoluzioneACO.soluzione.length;j++){
+        		if(SoluzioneACO.soluzione[j]==-1){
+        			g2d.drawLine(344+20+255+InizializzazioneProblema.PosX[SoluzioneACO.soluzione[j-1]]*10, 42+255+20-InizializzazioneProblema.PosY[SoluzioneACO.soluzione[j-1]]*10,344+20+250, 42+20+250);
         		}else
-        			if(Pippo.soluzione[j-1]==-1){
-        				g2d.drawLine(344+20+250, 42+20+250, 344+20+255+InizializzazioneProblema.PosX[Pippo.soluzione[j]]*10, 42+255+20-InizializzazioneProblema.PosY[Pippo.soluzione[j]]*10);
+        			if(SoluzioneACO.soluzione[j-1]==-1){
+        				g2d.drawLine(344+20+250, 42+20+250, 344+20+255+InizializzazioneProblema.PosX[SoluzioneACO.soluzione[j]]*10, 42+255+20-InizializzazioneProblema.PosY[SoluzioneACO.soluzione[j]]*10);
             		}else{
-        		g2d.drawLine(344+20+255+InizializzazioneProblema.PosX[Pippo.soluzione[j-1]]*10, 42+255+20-InizializzazioneProblema.PosY[Pippo.soluzione[j-1]]*10, 344+20+255+InizializzazioneProblema.PosX[Pippo.soluzione[j]]*10, 42+255+20-InizializzazioneProblema.PosY[Pippo.soluzione[j]]*10);
+        		g2d.drawLine(344+20+255+InizializzazioneProblema.PosX[SoluzioneACO.soluzione[j-1]]*10, 42+255+20-InizializzazioneProblema.PosY[SoluzioneACO.soluzione[j-1]]*10, 344+20+255+InizializzazioneProblema.PosX[SoluzioneACO.soluzione[j]]*10, 42+255+20-InizializzazioneProblema.PosY[SoluzioneACO.soluzione[j]]*10);
             		}
         }
-        g2d.drawLine(344+20+255+InizializzazioneProblema.PosX[Pippo.soluzione[Pippo.soluzione.length-1]]*10, 42+255+20-InizializzazioneProblema.PosY[Pippo.soluzione[Pippo.soluzione.length-1]]*10,344+20+250, 42+20+250);
-    }}
+        g2d.drawLine(344+20+255+InizializzazioneProblema.PosX[SoluzioneACO.soluzione[SoluzioneACO.soluzione.length-1]]*10, 42+255+20-InizializzazioneProblema.PosY[SoluzioneACO.soluzione[SoluzioneACO.soluzione.length-1]]*10,344+20+250, 42+20+250);
+    }
+        
+        	}
 	 
 	 public void paint(Graphics g) {
 			super.paint(g);
