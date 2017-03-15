@@ -5,9 +5,9 @@ public class AlgoritmoFormiche {
 
 	private static final int capacitainiziale = 10;
 	private static final double energiainiziale = 100;
-	private static final int maxIter=1000, m=20;
+	private static final int maxIter=1000;
 	
-
+	private static final int  m=20;
 	final double alpha=2,beta=5,gamma=9;
 	final double ro=0.80,theta=80;
 	final int sigma=3;
